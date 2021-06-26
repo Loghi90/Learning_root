@@ -24,9 +24,10 @@ atmVisitsStreamingDF.createOrReplaceTempView("ATMVisits")
 # TO-DO query the temporary view with spark.sql, with this query: "select * from ATMVisits"
 atmVisitsSelectStarDF = spark.sql("select * from ATMVisits")
 
-print(atmVisitsSelectStarDF.head())
+
 # TO-DO: write the dataFrame from the last select statement to kafka to the atm-visit-updates topic, on the broker localhost:9092, and configure it to retrieve the earliest messages 
-atmVisitsSelectStarDF.selectExpr("cast(key as string) as transactionid", "cast(value as string) as balance")\
+#atmVisitsSelectStarDF.selectExpr("cast(key as string) as transactionid", "cast(value as string) as balance")\
+atmVisitsSelectStarDF.selectExpr("key", "value")\
 .writeStream\
 .format("kafka")\
 .option("kafka.bootstrap.servers","localhost:9092")\
